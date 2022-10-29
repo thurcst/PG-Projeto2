@@ -19,3 +19,6 @@ class Circulo:
             if dist > 0:
                 return dist
         return None
+    
+    def normal(self,superficie_ponto):
+        return (superficie_ponto - self.centro).normalizacao()
