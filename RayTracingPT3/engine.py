@@ -5,6 +5,9 @@ from cor import Cor
 
 
 class RenderEngine:
+
+    MAX_PROFUNDIDADE = 5
+    MIN_DISPLACE = 0.0001
     def render(self,cena):
         largura= cena.largura
         altura= cena.altura
@@ -28,7 +31,7 @@ class RenderEngine:
                 print("{:3.0f}%".format(float(i)/float(altura)*100),end="\r")
         return pixels
 
-    def tracadoRaio(self, raioLuz, cena):
+    def tracadoRaio(self, raioLuz, cena, profundidade=0):
         cor= Cor(0,0,0)
         dist_hit, obj_hit = self.achar_prox(raioLuz, cena)
         if obj_hit is None:
@@ -36,6 +39,11 @@ class RenderEngine:
         hit_pos = raioLuz.origem + raioLuz.direcao * dist_hit
         hit_normal = obj_hit.normal(hit_pos)
         cor += self.cor_em(obj_hit, hit_pos,hit_normal, cena)
+        if profundidade < self.MAX_PROFUNDIDADE:
+            novo_raioLuz_pos = hit_pos + hit_normal * self.MIN_DISPLACE
+            novo_raioLuz_dir= raioLuz.direcao - 2 * raioLuz.direcao.dot_product(hit_normal)*hit_normal
+            novo_raioLuz = RaioLuz(novo_raioLuz_pos, novo_raioLuz_dir)
+            cor += self.tracadoRaio(novo_raioLuz,cena, profundidade+1)*obj_hit.material.reflexao
         return cor
 
     def achar_prox(self,raioLuz, cena):
