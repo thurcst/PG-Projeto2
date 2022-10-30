@@ -6,7 +6,7 @@ from cor import Cor
 
 class RenderEngine:
     def render(self,cena):
-        largura= cena.altura
+        largura= cena.largura
         altura= cena.altura
         aspect_ratio= float(largura)/altura
         x0 = -1.0
