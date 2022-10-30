@@ -16,15 +16,16 @@ class RenderEngine:
         y1= +1.0/ aspect_ratio
         ypasso = (y1-y0)/(altura-1)
 
-        camara= cena.camara
+        camera= cena.camera
         pixels= Imagem(largura,altura)
 
         for i in range(altura):
             y= y0 + i *ypasso
             for j in range(largura):
                 x = x0 + j * xpasso
-                raioLuz = RaioLuz(camara, Ponto(x,y) - camara)
+                raioLuz = RaioLuz(camera, Ponto(x,y) - camera)
                 pixels.set_pixel(j, i , self.tracadoRaio(raioLuz, cena))
+                print("{:3.0f}%".format(float(i)/float(altura)*100),end="\r")
         return pixels
 
     def tracadoRaio(self, raioLuz, cena):
@@ -33,7 +34,8 @@ class RenderEngine:
         if obj_hit is None:
             return cor
         hit_pos = raioLuz.origem + raioLuz.direcao * dist_hit
-        cor += self.cor_em(obj_hit, hit_pos, cena)
+        hit_normal = obj_hit.normal(hit_pos)
+        cor += self.cor_em(obj_hit, hit_pos,hit_normal, cena)
         return cor
 
     def achar_prox(self,raioLuz, cena):
@@ -46,8 +48,18 @@ class RenderEngine:
                 obj_hit = obj
         return (dist_min, obj_hit)
 
-    def cor_em(self, obj_hit, hit_pos, cena):
-        return obj_hit.material
+    def cor_em(self, obj_hit, hit_pos, norma, cena):
+        material= obj_hit.material
+        obj_cor=material.cor_em(hit_pos)
+        para_cam=cena.camera - hit_pos
+        especular_k=50
+        cor=material.ambiente * Cor.from_hex("#000000")
+        for luz in cena.luzes:
+            para_luz= RaioLuz(hit_pos,luz.posicao - hit_pos)
+            cor +=(obj_cor * material.difusa * max(norma.dot_product(para_luz.direcao),0))
+            metade_vetor = (para_luz.direcao + para_cam).normalizacao()
+            cor +=(luz.cor * material.especular * max(norma.dot_product(metade_vetor),0) ** especular_k)
+        return cor
 
 
     

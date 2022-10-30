@@ -5,13 +5,17 @@ from cor import Cor
 from imagem import Imagem
 from ponto import Ponto
 from circulo import Circulo
+from luz import Luz
+from material import Material
+
 
 def main():
     LARGURA =320
     ALTURA= 200
     camera= Vetor(0,0,-1)
-    objetos=[Circulo(Ponto(0,0,0), 0.5, Cor.from_hex("#FF0000"))]
-    cena = Cena(camera, objetos, LARGURA, ALTURA)
+    objetos=[Circulo(Ponto(0,0,0), 0.5, Material(Cor.from_hex("#FF0000")) )]
+    luzes= [Luz(Ponto(1.5,-0.5,-10.0), Cor.from_hex("#FFFFFF"))]
+    cena = Cena(camera, objetos, luzes, LARGURA, ALTURA)
     engine = RenderEngine()
     imagem = engine.render(cena)
 
