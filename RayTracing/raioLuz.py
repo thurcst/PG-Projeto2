@@ -1,5 +1,7 @@
-class RaioLuz:
+from vetor import Vetor
 
-    def __init__(self, origem, direcao):
+
+class RaioLuz:
+    def __init__(self, origem: Vetor, direcao: Vetor):
         self.origem = origem
         self.direcao = direcao.normalizacao()

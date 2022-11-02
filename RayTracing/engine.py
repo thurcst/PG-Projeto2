@@ -5,7 +5,7 @@ from cor import Cor
 
 
 class RenderEngine:
-    def render(self, cena):
+    def render(self, cena, backgroung_color):
         largura = cena.largura
         altura = cena.altura
 
@@ -29,11 +29,11 @@ class RenderEngine:
             for j in range(largura):
                 x = x0 + j * xpasso
                 raioLuz = RaioLuz(camera, Ponto(x, y) - camera)
-                pixels.set_pixel(j, i, self.tracadoRaio(raioLuz, cena))
+                pixels.set_pixel(j, i, self.tracadoRaio(raioLuz, cena, backgroung_color))
         return pixels
 
-    def tracadoRaio(self, raioLuz, cena):
-        cor = Cor(0, 0, 0)
+    def tracadoRaio(self, raioLuz, cena, backgroung_color):
+        cor = backgroung_color
         dist_hit, obj_hit = self.achar_prox(raioLuz, cena)
         if obj_hit is None:
             return cor

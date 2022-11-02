@@ -5,11 +5,20 @@ import numpy as np
 class Cor(Vetor):
     @classmethod
     def from_rgb(cls, rgb):
-        x = float(rgb[0])/255
-        y = float(rgb[1])/255
-        z = float(rgb[2])/255
+        """Retorna a classe Cor a partir de uma entrada RGB
 
-        print(x,y,z)
+        Args:
+            rgb (list): Lista com os valores RGB entre 0 e 255
+
+        Returns:
+            Cor: instância da classe Cor feita de acordo com valores RGB
+        """
+
+        x = float(rgb[0]) / 255
+        y = float(rgb[1]) / 255
+        z = float(rgb[2]) / 255
+
+        print(f"r: {x}\ng: {y}\nb: {z}")
         return cls(x, y, z)
 
     @classmethod
