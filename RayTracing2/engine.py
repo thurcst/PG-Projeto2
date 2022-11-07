@@ -2,6 +2,7 @@ import numpy as np
 import math
 
 from cena import Cena
+from tqdm import tqdm
 
 
 class RenderEngine:
@@ -24,8 +25,6 @@ class RenderEngine:
         q_00 = self.cena.q00
 
         for i in range(self.cena.altura):
-            if i % 24 == 0:
-                print(f"{(i/self.cena.altura) * 100}% concluído")
             for j in range(self.cena.largura):
                 q_ij = q_00 + self.cena.tamanho_pixel * (j * u - i * v)
                 dir_ray = (q_ij - foco_camera) / np.linalg.norm(q_ij - foco_camera)

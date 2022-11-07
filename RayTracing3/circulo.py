@@ -1,5 +1,4 @@
 from math import sqrt
-from vetor import Vetor
 
 import numpy as np
 import math
@@ -7,36 +6,33 @@ import math
 
 class Circulo:
     def __init__(
-        self,
-        centro,
-        raioCircuferencia,
-        material,
-        ka,
-        kd,
-        ks,
-        exp,
-        kr,
-        kt,
-        refraction_index,
+        self, centro, raioCircuferencia, cor, ka, kd, ks, exp, kr, kt, refraction_index,
     ):
-        self.centro = Vetor(centro[0], centro[1], centro[2])
+        self.centro = centro
         self.raioCircuferencia = raioCircuferencia
-        self.material = material
+        self.cor = cor
         self.k_a = ka
         self.k_d = kd
         self.k_s = ks
         self.exp = exp
-        self.kr = kr
-        self.kt = kt
+        self.k_r = kr
+        self.k_t = kt
         self.refraction_index = refraction_index
 
     def intersect(self, ray_origin, ray_dir):
-        l = self.centro - Vetor(ray_origin[0], ray_origin[1], ray_origin[2])
-        _l = [self.centro.x, self.centro.y, self.centro.z] - ray_origin
-        t_ca = np.inner(_l, ray_dir)
-        # t_ca_v = Vetor(t_ca[0], t_ca[1], t_ca[2])
+        """identifica se o raio intersecta a esfera no ponto da sua direção
 
-        inner = np.inner(_l, _l)
+        Args:
+            ray_origin (np.array): ponto de origem do raio
+            ray_dir (np.array): vetor de direção do raio
+
+        Returns:
+            None || np.array : None ou ponto de interseção da esfera
+        """
+        l = self.centro - ray_origin
+        t_ca = np.inner(l, ray_dir)
+
+        inner = np.inner(l, l)
 
         d_2 = (inner) - (t_ca) ** 2
 
@@ -51,7 +47,6 @@ class Circulo:
                 t0, t1 = t1, t0
             if t0 < 0:
                 if t1 < 0:
-                    # Off-sColor_reen intersection with sphere
                     return None
                 else:
                     return t1
@@ -59,11 +54,16 @@ class Circulo:
             return t0
 
     def get_normal(self, point_on_object):
+        """Retorna a normal já normalizada
+
+        Args:
+            point_on_object (np.array): Ponto no objeto
+
+        Returns:
+            np.array: a normal normalizada
+        """
         center = self.centro
-        center_to_point_vec = (point_on_object) - [center.x, center.y, center.z]
+        center_to_point_vec = (point_on_object) - center
         norm = np.linalg.norm(center_to_point_vec)
         return center_to_point_vec / norm
-
-    def __str__(self):
-        return f"centro: {self.centro}, raio: {self.raioCircuferencia}, material: {self.material}"
 

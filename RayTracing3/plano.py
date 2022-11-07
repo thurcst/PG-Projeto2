@@ -11,13 +11,13 @@ class Plano:
     ) -> None:
         self.sample = np.array(sample)
         self.normal = np.array(normal)
-        self.material = color
+        self.cor = color
         self.k_a = ka
         self.k_d = kd
         self.k_s = ks
         self.exp = exp
-        self.kr = kr
-        self.kt = kt
+        self.k_r = kr
+        self.k_t = kt
         self.refraction_index = refraction_index
 
     def intersect(self, ray_origin, ray_dir):
