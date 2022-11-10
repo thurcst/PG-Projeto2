@@ -1,4 +1,3 @@
-from cor import Cor
 from cena import Cena
 
 import numpy as np

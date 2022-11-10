@@ -1,16 +1,15 @@
-from vetor import Vetor
-from cena import Cena
 from engine import RenderEngine
-from circulo import Esfera
 from luz import light_source
+from cena import Cena
 
-from plano import Plano
 from triangulo import Triangulo
+from circulo import Esfera
+from plano import Plano
 
-import numpy as np
-import os
 import matplotlib.pyplot as plt
+import numpy as np
 import json
+import os
 
 from datetime import datetime
 
@@ -164,14 +163,8 @@ def main():
     # Pegamos apenas a primeira cena (motivos de desenvolvimento)
     cena = cenas[0]
 
-    print("Lendo objetos da cena...")
-
     objetos = read_objects(cena)
-
-    print("Montando a cena...")
     scene, background_color = build_scene(objetos, cena)
-
-    print("Renderizando imagem - pode demorar um pouco...")
 
     engine = RenderEngine(background_color, scene)
     imagem = engine.render()
@@ -181,10 +174,5 @@ def main():
 
 
 if __name__ == "__main__":
-    now = datetime.now()
     main()
-    end = datetime.now()
-
-    total_time = end - now
-    print(total_time.seconds)
 
